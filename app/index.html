@@ -8,8 +8,13 @@
       href="bower_components/bootstrap/dist/css/bootstrap.min.css"
     />
     <script src="bower_components/angular/angular.min.js"></script>
-    <script src="app/app.js"></script>
-    <script src="app/controllers/mainController.js"></script>
+    <script src="app.js"></script>
+    <script src="js/controllers/mainController.js"></script>
+    <script src="js/services/contactsServices.js"></script>
+    <script src="js/services/operatorsService.js"></script>
+    <script src="js/services/serialGeneratorService.js"></script>
+    <script src="js/value/configValue.js"></script>
+    <script src="js/config/serialGeneratorConfig.js"></script>
   </head>
   <style>
     .error-text {
@@ -145,7 +150,6 @@
         </div>
       </form>
     </div>
-
-    <div ng-include="'footer.html'"></div>
+    <div ng-include="'views/footer.html'"></div>
   </body>
 </html>
