@@ -1,0 +1,21 @@
+{
+  "name": "my-app-angular",
+  "authors": [
+    "talitaaraujodev <talitacumi.araujo@gmail.com>"
+  ],
+  "description": "",
+  "main": "",
+  "license": "MIT",
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "1.5",
+    "bootstrap": "^5.3.3"
+  }
+}

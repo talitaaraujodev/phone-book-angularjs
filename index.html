@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="listaTelefonica">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Lista Telefônica</title>
+    <link
+      rel="stylesheet"
+      href="bower_components/bootstrap/dist/css/bootstrap.min.css"
+    />
+    <script src="bower_components/angular/angular.min.js"></script>
+    <script src="app/app.js"></script>
+    <script src="app/controllers/mainController.js"></script>
+  </head>
+  <style>
+    .error-text {
+      color: #dc3545;
+    }
+  </style>
+
+  <body>
+    <div ng-controller="MainController" class="container p-1">
+      <div class="d-flex justify-content-between align-items-center mb-1">
+        <h2 class="text-black-50 pb-2">{{ title }}</h2>
+        <input
+          type="text"
+          name="search"
+          id="search"
+          placeholder="Pesquisar..."
+          class="border border-secondary-subtle p-2 rounded"
+          style="width: 30% !important"
+          ng-model="search"
+        />
+      </div>
+
+      <table class="table border rounded shadow-sm">
+        <thead>
+          <tr>
+            <th></th>
+            <th>Nome</th>
+            <th>Telefone</th>
+            <th>Operadora</th>
+            <th>Data de criação</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="contact in contacts | filter:search | orderBy:'name'">
+            <td><input type="checkbox" ng-model="contact.selected" /></td>
+            <td>{{ contact.name | uppercase }}</td>
+            <td>{{ contact.phone }}</td>
+            <td>{{ contact.operator.name}}</td>
+            <td>{{ contact.createdAt | date: 'dd/MM/yyyy' }}</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <form
+        name="contactForm"
+        class="w-100 p-3"
+        ng-submit="addContact(contactForm, contact)"
+        novalidate
+      >
+        <div class="py-2 form-group">
+          <label for="name" class="pb-2">Nome</label>
+          <input
+            type="text"
+            id="name"
+            name="name"
+            placeholder="Digite seu nome..."
+            class="py-2 form-control w-100"
+            ng-model="contact.name"
+            ng-required="true"
+          />
+          <div
+            ng-show="contactForm.name.$touched && contactForm.name.$invalid"
+            class="error-text"
+          >
+            <span ng-show="contactForm.name.$error.required"
+              >O nome é obrigatório.</span
+            >
+          </div>
+        </div>
+        <div class="py-2 form-group">
+          <label for="phone" class="pb-2">Telefone</label>
+          <input
+            type="text"
+            id="phone"
+            name="phone"
+            placeholder="Digite seu telefone..."
+            class="py-2 form-control w-100"
+            ng-model="contact.phone"
+            ng-required="true"
+            ng-pattern="phonePattern"
+          />
+          <div
+            ng-show="contactForm.phone.$touched && contactForm.phone.$invalid"
+            class="error-text"
+          >
+            <span ng-show="contactForm.phone.$error.required"
+              >O telefone é obrigatório.</span
+            >
+            <span ng-show="contactForm.phone.$error.pattern"
+              >Formato de telefone inválido. Use o formato 1234-5678 ou (85)
+              99710-1938.</span
+            >
+          </div>
+        </div>
+        <div class="py-2 form-group">
+          <label for="operator">Selecione a Operadora</label>
+          <select
+            class="form-select"
+            id="operator"
+            name="operator"
+            ng-model="contact.operator"
+            ng-options="operator as operator.name group by operator.category for operator in operators | orderBy:'name'"
+            ng-required="true"
+          >
+            <option value="">Selecione a operadora</option>
+          </select>
+          <div
+            ng-show="contactForm.operator.$touched && contactForm.operator.$invalid"
+            class="error-text"
+          >
+            <span ng-show="contactForm.operator.$error.required"
+              >A operadora é obrigatória.</span
+            >
+          </div>
+        </div>
+        <div class="d-flex justify-content-end pt-2">
+          <button
+            type="submit"
+            class="btn btn-primary btn-lg btn-block me-2"
+            ng-class="{'cursor-disabled': contactForm.$invalid}"
+            ng-disabled="contactForm.$invalid"
+          >
+            Adicionar Contato
+          </button>
+          <button
+            type="button"
+            class="btn btn-danger btn-lg btn-block"
+            ng-click="removeContact()"
+            ng-disabled="!hasSelectedContacts()"
+          >
+            Apagar Contato
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <div ng-include="'footer.html'"></div>
+  </body>
+</html>
