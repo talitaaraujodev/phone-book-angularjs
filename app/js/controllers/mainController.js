@@ -11,23 +11,36 @@ app.controller("MainController", [
     $scope.contacts = [];
     $scope.operators = [];
     $scope.contact = {};
+    $scope.error = "";
 
     const loadContacts = () => {
-      contactsAPI.getContacts().then((res) => {
-        $scope.contacts = res.data;
-      });
+      contactsAPI
+        .getContacts()
+        .then((res) => {
+          $scope.contacts = res.data;
+          $scope.error = "";
+        })
+        .catch((erro) => {
+          console.log("Erro:", erro);
+          $scope.error = "Não foi possivel carregar os contatos!";
+        });
     };
 
     const loadOperators = () => {
-      operatorsAPI.getOperators().then((res) => {
-        $scope.operators = res.data;
-      });
+      operatorsAPI
+        .getOperators()
+        .then((res) => {
+          $scope.operators = res.data;
+        })
+        .catch((erro) => {
+          console.log("Erro:", erro);
+          $scope.error = "Não foi possível carregar as operadoras!";
+        });
     };
 
     $scope.addContact = function (form, contact) {
       if (form.$valid) {
         contact.serial = serialGenerator.generate();
-        contact.createdAt = new Date();
 
         contactsAPI.saveContact(contact).then((res) => {
           delete $scope.contact;

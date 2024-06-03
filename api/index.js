@@ -14,21 +14,21 @@ const contacts = [
     phone: "1234-5678",
     operator: { name: "Tim", cod: 41 },
     selected: false,
-    createdAt: new Date(),
+    date: new Date(),
   },
   {
     name: "Maria",
     phone: "8765-4321",
     operator: { name: "Tim", cod: 41 },
     selected: false,
-    createdAt: new Date(),
+    date: new Date(),
   },
   {
     name: "Pedro",
     phone: "1234-4321",
     operator: { name: "Tim", cod: 41 },
     selected: false,
-    createdAt: new Date(),
+    date: new Date(),
   },
 ];
 

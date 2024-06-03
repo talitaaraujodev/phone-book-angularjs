@@ -7,6 +7,7 @@
       rel="stylesheet"
       href="bower_components/bootstrap/dist/css/bootstrap.min.css"
     />
+    <link rel="stylesheet" type="text/css" href="css/ui.css" />
     <script src="bower_components/angular/angular.min.js"></script>
     <script src="app.js"></script>
     <script src="js/controllers/mainController.js"></script>
@@ -15,6 +16,10 @@
     <script src="js/services/serialGeneratorService.js"></script>
     <script src="js/value/configValue.js"></script>
     <script src="js/config/serialGeneratorConfig.js"></script>
+    <script src="js/filters/nameFilter.js"></script>
+    <script src="js/filters/elipsisFilter.js"></script>
+    <script src="js/directives/uiAlertDirective.js"></script>
+    <script src="js/directives/uiDateDirective.js"></script>
   </head>
   <style>
     .error-text {
@@ -36,11 +41,14 @@
           ng-model="search"
         />
       </div>
-
+      <ui-alert title="Ops, aconteceu um problema!" ng-hide="!(error)">
+        {{error}}
+      </ui-alert>
       <table class="table border rounded shadow-sm">
         <thead>
           <tr>
             <th></th>
+            <th>Serial</th>
             <th>Nome</th>
             <th>Telefone</th>
             <th>Operadora</th>
@@ -50,10 +58,11 @@
         <tbody>
           <tr ng-repeat="contact in contacts | filter:search | orderBy:'name'">
             <td><input type="checkbox" ng-model="contact.selected" /></td>
-            <td>{{ contact.name | uppercase }}</td>
+            <td>{{ contact.serial }}</td>
+            <td>{{ contact.name | name | elipsis: 10 }}</td>
             <td>{{ contact.phone }}</td>
             <td>{{ contact.operator.name}}</td>
-            <td>{{ contact.createdAt | date: 'dd/MM/yyyy' }}</td>
+            <td>{{ contact.date | date:'dd/MM/yyyy'}}</td>
           </tr>
         </tbody>
       </table>
@@ -109,6 +118,27 @@
             >
           </div>
         </div>
+        <div class="py-2 form-group">
+          <label for="date" class="pb-2">Data</label>
+          <input
+            class="form-control"
+            type="text"
+            ng-model="contact.date"
+            name="date"
+            ng-required="true"
+            ui-date
+            placeholder="Digite a data..."
+          />
+          <div
+            ng-show="contactForm.date.$touched && contactForm.date.$invalid"
+            class="error-text"
+          >
+            <span ng-show="contactForm.date.$error.required"
+              >A data é obrigatório.</span
+            >
+          </div>
+        </div>
+
         <div class="py-2 form-group">
           <label for="operator">Selecione a Operadora</label>
           <select
